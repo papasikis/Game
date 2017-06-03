@@ -1,0 +1,63 @@
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
+#include <QGraphicsObject>
+#include "../main/game.h"
+#include <QDomDocument>
+#include <QFile>
+#include <QDebug>
+#include <QPainter>
+#include <QGraphicsItemAnimation>
+#include <QPropertyAnimation>
+#include <QGraphicsScene>
+#include "../main/map.h"
+
+//const QString RESOURCES = ":/new/prefix1/isometric_hero/";
+
+class GraphicsCreature : public QGraphicsObject
+{
+    Q_OBJECT
+    Q_PROPERTY(int frame READ frame WRITE setFrame)
+
+    QPointF center_ = QPointF(64, 96);
+    int frame_ = 0;
+    QPoint sourcePos_ = QPoint(0, 0);
+    QSize tileSize_ = QSize(0, 0);
+
+protected:
+    Game* game = 0;
+    QMap<QString, QPixmap*> source_;
+    QVector<QPixmap*> actualThings_;
+    QMap<QString,QPropertyAnimation*> animations_;
+
+public:
+    explicit GraphicsCreature(const QString& fileName);
+    void setInfo(const QString &fileName);
+    QPoint sourcePos() const;
+    void setSourcePos(const QPoint &sourcePos);
+    int frame() const;
+    void setFrame(int value);
+    void moveTo(const QPoint& node);
+    QPointF center() const {return pos()+center_;}
+
+    enum {
+        Type = UserType+1
+    };
+
+    // QGraphicsItem interface
+public:
+    virtual QRectF boundingRect() const override;
+    virtual void paint(QPainter *painter,
+                       const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual int type() const override {return Type;}
+};
+
+class GameCreature: public GraphicsCreature
+{
+    int orientation_ = 1;
+    Game* game_ = 0;
+public:
+    GameCreature(const QString& fileName): GraphicsCreature(fileName) {}
+};
+
+#endif // GAMEOBJECT_H

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creature type="hero_man" tilewidth="128" tileheight="128" rows="32" lines="8"
+    centerX="64" centerY="96">
+
+    <animation type="stay" firstid="0" count="4" />
+    <animation type="run" firstid="4" count="8" />
+    <animation type="hit" firstid="12" count="4" />
+    <animation type="block" firstid="16" count="2" />
+    <animation type="dead" firstid="18" count="6" />
+    <animation type="hide_weapon" firstid="24" count="8" />
+
+    <itemgroup name="clothes">
+        <image source="clothes.png" name="clothes"/>
+    <itemgroup/>
+
+    <itemgroup name="head">
+        <image source="male_head1.png" name="male_head1"/>
+    <itemgroup/>
+
+    <itemgroup name="weapon">
+        <image source="greatsword.png" name="greatsword"/>
+    <itemgroup/>
+
+    <itemgroup name="shield">
+        <image source="shield.png" name="shield"/>
+    <itemgroup/>
+</creature>

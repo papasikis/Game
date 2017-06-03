@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>resources/grass_tiles.png</file>
+        <file>resources/tile_map.tmx</file>
+        <file>resources/caves_tiles_96x110.png</file>
+        <file>resources/walls_tiles.png</file>
+        <file>resources/trees_1_tiles_135x175.png</file>
+        <file>resources/items_tiles_1_64x35.png</file>
+        <file>resources/items_tiles_2_68x54.png</file>
+        <file>resources/knight_test.png</file>
+        <file>resources/house_tile_1_158x146.png</file>
+        <file>resources/isometric_hero/clothes.png</file>
+        <file>resources/isometric_hero/greatsword.png</file>
+        <file>resources/isometric_hero/male_head1.png</file>
+        <file>resources/isometric_hero/shield.png</file>
+        <file>resources/isometric_hero/hero_man.xml</file>
+    </qresource>
+</RCC>
