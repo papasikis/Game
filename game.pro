@@ -38,7 +38,14 @@ HEADERS += \
     main/game.h \
     game_objects/hero.h \
     game_objects/gamecreature.h \
-    game_objects/graphicscreature.h
+    game_objects/graphicscreature.h \
+    game_objects/armor.h \
+    game_objects/inventory.h \
+    game_objects/item.h \
+    game_objects/magic.h \
+    game_objects/mob.h \
+    game_objects/usable.h \
+    game_objects/weapon.h
 
 SOURCES += \
     main.cpp \
@@ -49,4 +56,11 @@ SOURCES += \
     main/game.cpp \
     game_objects/hero.cpp \
     game_objects/gamecreature.cpp \
-    game_objects/graphicscreature.cpp
+    game_objects/graphicscreature.cpp \
+    game_objects/armor.cpp \
+    game_objects/inventory.cpp \
+    game_objects/item.cpp \
+    game_objects/magic.cpp \
+    game_objects/mob.cpp \
+    game_objects/usable.cpp \
+    game_objects/weapon.cpp
