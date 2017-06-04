@@ -2,10 +2,10 @@
 #define MOB_H
 #include "gamecreature.h"
 
-class Mob : public GameCreature
-{
-public:
-    Mob();
-};
+//class Mob : public GameCreature
+//{
+//public:
+//    Mob();
+//};
 
 #endif // MOB_H

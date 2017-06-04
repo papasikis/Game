@@ -1,6 +1,6 @@
 #include "mob.h"
 
-Mob::Mob()
-{
+//Mob::Mob()
+//{
 
-}
+//}
