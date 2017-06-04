@@ -65,15 +65,6 @@ void GraphicsCreature::move(QList<QPoint> nodes)
 
         prevNode = node;
 
-//        connect(changeSourcePos, &QPropertyAnimation::finished,
-//                [changeSourcePos](){
-//            delete changeSourcePos;
-//        });
-//        connect(changePos, &QPropertyAnimation::finished,
-//                [changePos](){
-//            delete changePos;
-//        });
-
         if (direction == 0 || direction == 2 || direction == 4 || direction == 6) {//for diagonal nodes
             changePos->setDuration(runDuration_ * 1.4);
             changeSourcePos->setDuration(runDuration_ * 1.4);
@@ -155,6 +146,7 @@ void GraphicsCreature::setPos(const QPointF &point)
     auto _pos = point-center_;
     QGraphicsItem::setPos(_pos);
     currentNode_ = map_->fromScreenToNode(point.toPoint());
+    setZValue(currentNode().x()*currentNode().y());
 }
 
 QPointF GraphicsCreature::pos() const

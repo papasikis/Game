@@ -261,12 +261,13 @@ void Map::addHigher(/*QGraphicsScene *scene*/)
                 higher->setPos(fromLogicToScreen(QPoint(j*tileHeight, i*tileHeight)) -
                                QPoint(tile.width/2, tile.height - tileHeight));
 
-                higher->setZValue((i+0.5)*(j+0.25)*2);
+//                higher->setZValue((i+0.5)*(j+0.25)*2);
+                if (higher->barrier() != nullptr) {
+                    auto _ = fromScreenToNode((higher->barrier()->pos()+ higher->pos()).toPoint());
+                    higher->setZValue(_.x()*_.y());
+                }
 
                 scene_->addItem(higher);
-//                auto text = new QGraphicsTextItem(QString::fromStdString(to_string(higher->zValue())),
-//                                                  higher);
-//                text->setPos(0, 0);
             }
         }
     }
@@ -358,8 +359,8 @@ QList<QPoint> Map::getWayFromTo(const QPoint &startNode, QPoint endNode)
         for (auto direction: directions) {
             auto node = currentNode + direction;
 
-            if (node.x() >= 0 && node.x() < 100 && node.y() >= 0 &&
-                    node.y() < 100 && used[node.x()][node.y()] == QPoint(-1, -1))
+            if (node.x() >= 0 && node.x() < 30 && node.y() >= 0 &&
+                    node.y() < 30 && used[node.x()][node.y()] == QPoint(-1, -1))
             {
                 used[node.x()][node.y()] = currentNode;
                 if (isEmpty(node)) {

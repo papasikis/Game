@@ -132,7 +132,7 @@ public:
     }
     void setBarrier(QAbstractGraphicsShapeItem *barrier)
     {
-        barrier_ = dynamic_cast<Barrier*>(barrier);
+        barrier_ = reinterpret_cast<Barrier*>(barrier);
     }
 };
 
