@@ -64,7 +64,7 @@ public:
     void addFloor(/*QGraphicsScene* scene*/);
     void addHigher();
 
-    QList<QPoint> getWayFromTo(const QPoint& startNode, const QPoint& endNode);
+    QList<QPoint> getWayFromTo(const QPoint& startNode,QPoint endNode);
 
     void parseTMX(const QDomDocument &domDoc);
     QDomDocument loadTMX(const QString &filename);
@@ -84,7 +84,7 @@ private:
 
     //tileHeight use in program like as logicTileSize(side)
     int logicWidth, width, height, logicHeight, tileWidth, tileHeight;
-    int nodeSize;
+    int nodeSize = 32;
 
     QVector<Tile> tiles;
     QVector<QPixmap*> pixmaps;
@@ -100,9 +100,10 @@ public:
     Barrier(QAbstractGraphicsShapeItem* item):
     QAbstractGraphicsShapeItem(item)
     {}
-    enum {Type = UserType+1};
+    enum {Type = UserType-5550};
     int type() const override {return Type;}
 };
+
 
 class MapObject: public QAbstractGraphicsShapeItem {
 

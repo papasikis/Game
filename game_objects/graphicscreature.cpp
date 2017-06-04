@@ -84,10 +84,47 @@ void GraphicsCreature::move(QList<QPoint> nodes)
 
         seq->addAnimation(animation);
     }
+
     changeState(Run);
-    seq->start(QAbstractAnimation::DeleteWhenStopped);
     connect(seq, &QSequentialAnimationGroup::finished,
-            [this](){changeState(Stay);});
+            [this](){
+        changeState(Stay);
+        emit moveStopped();
+    });
+    if (seq->animationCount() == 0) {
+        seq->finished();
+    }
+    else
+        seq->start(QAbstractAnimation::DeleteWhenStopped);
+
+}
+
+void GraphicsCreature::hit()
+{
+    auto animation = new QPropertyAnimation(this, "sourcePos");
+    animation->setStartValue(QPoint(12, sourcePos().y()));
+    animation->setEndValue(QPoint(15, sourcePos().y()));
+    connect(animation, &QPropertyAnimation::finished,
+            [this](){
+       changeState(Stay);
+       emit hitStopped();
+    });
+    changeState(Hit);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void GraphicsCreature::getDamage()
+{
+    auto animation = new QPropertyAnimation(this, "sourcePos");
+    animation->setStartValue(QPoint(16, sourcePos().y()));
+    animation->setEndValue(QPoint(17, sourcePos().y()));
+    connect(animation, &QPropertyAnimation::finished,
+            [this](){
+       changeState(Stay);
+       emit damaged();
+    });
+    changeState(Damaged);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void GraphicsCreature::changeState(GraphicsCreature::State state)
@@ -116,20 +153,24 @@ void GraphicsCreature::changeState(GraphicsCreature::State state)
 void GraphicsCreature::setPos(const QPointF &point)
 {
     auto _pos = point-center_;
-    QGraphicsObject::setPos(_pos);
+    QGraphicsItem::setPos(_pos);
     currentNode_ = map_->fromScreenToNode(point.toPoint());
 }
 
 QPointF GraphicsCreature::pos() const
 {
-    return QGraphicsObject::pos() + center_;
+    return QGraphicsItem::pos() + center_;
 }
 
-GraphicsCreature::GraphicsCreature(const QString& fileName, Map *map, const QPoint &node) :
-    QGraphicsObject(), map_(map)
+GraphicsCreature::GraphicsCreature(const QString& fileName, Map *map, const QPoint &node, QObject *parent) :
+    QObject(parent), map_(map)
 {
     setInfo(fileName);
     setPos(map->fromNodeToScreen(node));
+
+    barrier_ = new Barrier(QRect(center_.x()-15, center_.y()-7, 30, 15), this);
+    body_ = new Body(QRect(55, 55, 20, 40), this);
+
     changeState(Stay);
 }
 
@@ -207,3 +248,5 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 //        }
 //    }
 }
+
+

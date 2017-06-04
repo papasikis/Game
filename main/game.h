@@ -16,6 +16,8 @@ class Game : public QObject
 public:
     explicit Game(Map* map);
     void setMap(Map* map);
+    void addOnScene(GameCreature* creature);
+
 signals:
 
 public slots:

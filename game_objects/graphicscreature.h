@@ -15,22 +15,58 @@
 
 //const QString RESOURCES = ":/new/prefix1/isometric_hero/";
 
-class GraphicsCreature : public QGraphicsObject
+class GraphicsCreature :public QObject, public QGraphicsItem
 {
+
 public:
+    class Barrier: public QGraphicsEllipseItem
+    {
+    public:
+        Barrier(const QRect& rect, QGraphicsItem* parent):
+        QGraphicsEllipseItem(rect, parent)
+        {
+            setPen(QPen(Qt::black));
+        }
+        enum {Type = UserType-1234};
+
+    public:
+        virtual int type() const override
+        {
+            return Type;
+        }
+    };
+
+    class Body: public QGraphicsRectItem
+    {
+    public:
+        Body(const QRect& rect, QGraphicsItem* parent):
+            QGraphicsRectItem(rect, parent)
+        {
+            setPen(QPen(Qt::red));
+        }
+        enum {Type = UserType-4321};
+
+    public:
+        virtual int type() const override
+        {
+            return Type;
+        }
+    };
+
     enum {
-        Type = UserType+1
+        Type = UserType-20000
     };
 
     enum State{
-        Run, Stay, Hit, Dead
+        Run, Stay, Hit, Dead, Damaged
     };
 private:
     Q_OBJECT
     Q_PROPERTY(QPoint sourcePos READ sourcePos WRITE setSourcePos)
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
     
-
+    Barrier* barrier_ = nullptr;
+    Body* body_ = nullptr;
     QPointF center_ = QPointF(64, 96);
     QPoint sourcePos_ = QPoint(0, 0);
     QSize tileSize_ = QSize(0, 0);
@@ -45,17 +81,26 @@ protected:
     QMap<QString,QPropertyAnimation*> animations_;
 
 public:
-    explicit GraphicsCreature(const QString& fileName, Map* map, const QPoint& node);
+    explicit GraphicsCreature(const QString& fileName, Map* map, const QPoint& node,
+                              QObject* parent = nullptr);
     void setInfo(const QString &fileName);
 
     QPoint sourcePos() const;
     void setSourcePos(const QPoint &sourcePos);
 
     void move(QList<QPoint> nodes);
+    void hit();
+    void getDamage();
+
     QPoint currentNode() const {return currentNode_;}
 
     State state() const {return state_;}
     void changeState(State state);
+
+signals:
+    void moveStopped() const;
+    void hitStopped() const;
+    void damaged() const;
 
     // QGraphicsItem interface
 public:

@@ -1,4 +1,5 @@
 #include "map.h"
+#include "./../game_objects/graphicscreature.h"
 
 Map::Map(const QString& mapName, Scene *_scene):
     scene_(_scene)
@@ -191,7 +192,7 @@ void Map::parseTMX(const QDomDocument &domDoc)
     tileWidth = map.toElement().attribute("tilewidth").toInt();
     tileHeight = map.toElement().attribute("tileheight").toInt();
     //----
-    nodeSize = tileHeight;
+//    nodeSize = tileHeight;
     //----
     logicWidth = width*tileHeight;
     logicHeight = height*tileHeight;
@@ -271,9 +272,10 @@ void Map::addHigher(/*QGraphicsScene *scene*/)
     }
 }
 
-QList<QPoint> Map::getWayFromTo(const QPoint &startNode, const QPoint &endNode)
+QList<QPoint> Map::getWayFromTo(const QPoint &startNode, QPoint endNode)
 {
-    auto isEmpty = [this](QPoint node) {//check if node is empty
+    bool creatureFlag = false;
+    auto isEmpty = [this, &endNode, &creatureFlag](QPoint node) {//check if node is empty
         auto points = QVector<QPoint>{
                         QPoint(node.x(), node.y()),
                     QPoint(node.x()+1, node.y()),
@@ -296,7 +298,12 @@ QList<QPoint> Map::getWayFromTo(const QPoint &startNode, const QPoint &endNode)
 //            auto type = item->type();
 //            auto barrierType = Barrier::Type;
 //            auto shapeType = QAbstractGraphicsShapeItem::Type;
-            if (item->type() == 5) {//WTF???
+
+            if (item->type() == 5 || item->type() == GraphicsCreature::Barrier::Type) {//WTF???
+                if (endNode == node) {
+                    creatureFlag = true;
+                    break;
+                }
                 result = false;
                 break;
             }
@@ -356,6 +363,10 @@ QList<QPoint> Map::getWayFromTo(const QPoint &startNode, const QPoint &endNode)
             {
                 used[node.x()][node.y()] = currentNode;
                 if (isEmpty(node)) {
+                    if (node == endNode) {
+                        flag = true;
+                        return;
+                    }
                     q.push(node);
                 }
             }
@@ -365,12 +376,17 @@ QList<QPoint> Map::getWayFromTo(const QPoint &startNode, const QPoint &endNode)
     bool flag = false;
     go(flag);//troubles with default parameters within functors
 
+    if (creatureFlag) {
+        endNode = used[endNode.x()][endNode.y()];
+    }
+
     if (used[endNode.x()][endNode.y()] != QPoint(-1, -1)) {
         result.push_front(endNode);
         while (result.first() != startNode) {
             result.push_front(used[result.first().x()][result.first().y()]);
         }
     }
+
 
     return result;
 }
