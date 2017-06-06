@@ -112,11 +112,27 @@ void GraphicsCreature::getDamage()
     connect(animation, &QPropertyAnimation::finished,
             [this](){
        changeState(Stay);
-       emit damaged();
+       emit getDamageStopped();
     });
     changeState(Damaged);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
+
+void GraphicsCreature::die()
+{
+    auto animation = new QPropertyAnimation(this, "sourcePos");
+    animation->setStartValue(QPoint(18, sourcePos().y()));
+    animation->setEndValue(QPoint(23, sourcePos().y()));
+    animation->setDuration(1000);
+    connect(animation, &QPropertyAnimation::finished,
+            [this](){
+       emit dieStopped();
+    });
+    changeState(Dead);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+
 
 void GraphicsCreature::changeState(GraphicsCreature::State state)
 {

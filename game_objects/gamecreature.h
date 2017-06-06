@@ -6,7 +6,7 @@
 #include <QMetaObject>
 #include <QTimer>
 
-class GameCreature: QObject
+class GameCreature: public QObject
 {
     Q_OBJECT
 
@@ -14,7 +14,7 @@ class GameCreature: QObject
     int orientation_ = 1;
     int damage_ = 1;
     int health_ = 5;
-    int attackSpeed_ = 2;
+    float attackSpeed_ = 1.5;
     bool inFight_ = false;
     GameCreature* enemy_ = nullptr;
     enum State {Move, None};
@@ -22,6 +22,7 @@ class GameCreature: QObject
 
 public:
     GameCreature(QString str, Map* map, const QPoint& node);
+    ~GameCreature();
     GraphicsCreature* graphicsCreature() {return graphicsCreature_;}
     void move(const QList<QPoint>& nodes);
     void attack(GameCreature* enemy, const QList<QPoint> &nodes);
@@ -32,5 +33,8 @@ public:
     void hit();
     void fightWith(GameCreature* enemy);
     void stopFight();
+
+signals:
+    void die() const;
 };
 #endif // GAMECREATURE_H

@@ -6,6 +6,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+    start();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::start()
+{
     ui->setupUi(this);
     Scene* scene = new Scene(ui->graphicsView->geometry());
     ui->graphicsView->setScene(scene);
@@ -18,30 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     map->addFloor();
     map->addHigher();
 
-//    scene->setSceneRect(scene->sceneRect().x(), scene->sceneRect().y(),
-//                        scene->sceneRect().width()*2, scene->sceneRect().height()*2);
-
     scene->setSceneRect(map->fromLogicToScreen(QPoint(0,0)).x() - scene->sceneRect().width()/2,
                         map->fromLogicToScreen(QPoint(0,0)).y(),
                         scene->sceneRect().width(), scene->sceneRect().height());
 
     auto game = new Game(map);
-
-
-//    connect(hero, &Hero::yChanged,
-//            [=](){
-//        auto point = map->fromScreenToLogic(hero->center().toPoint());
-//        qDebug() << point.x()/map->getTileHeight() << " " << point.y()/map->getTileHeight();
-//    });
-//    connect(hero, &Hero::xChanged,
-//            [=](){
-//        auto point = map->fromScreenToLogic(hero->center().toPoint());
-//        qDebug() << point.x()/map->getTileHeight() << " " << point.y()/map->getTileHeight();
-//    });
-
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }

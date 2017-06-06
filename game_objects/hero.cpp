@@ -5,6 +5,10 @@ Hero::Hero(const QString& infoFile, Map *map, const QPoint &node):
 {
     graphicsCreature()->setFlag(QGraphicsItem::ItemIsMovable);
     graphicsCreature()->setFlag(QGraphicsItem::ItemIsFocusable);
+
+//    if (graphicsCreature()->body() != nullptr) {
+//        delete graphicsCreature()->body();
+//    }
 }
 
 

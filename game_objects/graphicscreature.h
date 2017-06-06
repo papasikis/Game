@@ -68,7 +68,6 @@ private:
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
     
     Barrier* barrier_ = nullptr;
-    Body* body_ = nullptr;
     QPointF center_ = QPointF(64, 96);
     QPoint sourcePos_ = QPoint(0, 0);
     QSize tileSize_ = QSize(0, 0);
@@ -76,11 +75,12 @@ private:
     QPoint currentNode_;
     Map* map_;
     State state_ = Stay;
-    
-protected:
+
     QMap<QString, QPixmap*> source_;
     QVector<QPixmap*> actualThings_;
     QMap<QString,QPropertyAnimation*> animations_;
+
+    Body* body_ = nullptr;
 
 public:
     explicit GraphicsCreature(const QString& fileName, Map* map, const QPoint& node,
@@ -93,16 +93,20 @@ public:
     void move(QList<QPoint> nodes);
     void hit();
     void getDamage();
+    void die();
 
     QPoint currentNode() const {return currentNode_;}
 
     State state() const {return state_;}
     void changeState(State state);
 
+    Body* body() {return body_;}
+
 signals:
     void moveStopped() const;
     void hitStopped() const;
-    void damaged() const;
+    void getDamageStopped() const;
+    void dieStopped() const;
 
     // QGraphicsItem interface
 public:
