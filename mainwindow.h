@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include "menu.h"
 #include "main/map.h"
 #include "main/scene.h"
 #include "main/view.h"

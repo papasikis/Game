@@ -25,7 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    menu.ui
 
 RESOURCES += \
     tiles.qrc
@@ -45,7 +46,8 @@ HEADERS += \
     game_objects/magic.h \
     game_objects/mob.h \
     game_objects/usable.h \
-    game_objects/weapon.h
+    game_objects/weapon.h \
+    menu.h
 
 SOURCES += \
     main.cpp \
@@ -63,4 +65,5 @@ SOURCES += \
     game_objects/magic.cpp \
     game_objects/mob.cpp \
     game_objects/usable.cpp \
-    game_objects/weapon.cpp
+    game_objects/weapon.cpp \
+    menu.cpp
