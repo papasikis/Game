@@ -147,6 +147,9 @@ void GraphicsCreature::setPos(const QPointF &point)
     QGraphicsItem::setPos(_pos);
     currentNode_ = map_->fromScreenToNode(point.toPoint());
     setZValue(currentNode().x()*currentNode().y());
+
+    auto bodyPos = mapToScene(55, 55).toPoint();
+    body_->setPos(bodyPos);
 }
 
 QPointF GraphicsCreature::pos() const
@@ -155,13 +158,16 @@ QPointF GraphicsCreature::pos() const
 }
 
 GraphicsCreature::GraphicsCreature(const QString& fileName, Map *map, const QPoint &node, QObject *parent) :
-    QObject(parent), map_(map)
+    QObject(parent) ,map_(map)
 {
     setInfo(fileName);
-    setPos(map->fromNodeToScreen(node));
 
     barrier_ = new Barrier(QRect(center_.x()-15, center_.y()-7, 30, 15), this);
-    body_ = new Body(QRect(55, 55, 20, 40), this);
+    body_ = new Body(QRect(0, 0, 20, 40), this);
+
+    map_->scene()->addItem(body_);
+    map_->scene()->addItem(this);
+    setPos(map->fromNodeToScreen(node));
 
     changeState(Stay);
 }
@@ -231,7 +237,6 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
                                   sourcePos_.y()*tileSize_.height(),
                                   boundingRect().width(), boundingRect().height()));
     }
-
 
 //    for (auto item: this->collidingItems()) {
 //        if (item->type() == MapObject::Type)

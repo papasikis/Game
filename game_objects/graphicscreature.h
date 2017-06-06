@@ -36,13 +36,15 @@ public:
         }
     };
 
-    class Body: public QGraphicsRectItem
+    class Body: public QObject, public QGraphicsRectItem
     {
     public:
-        Body(const QRect& rect, QGraphicsItem* parent):
-            QGraphicsRectItem(rect, parent)
+        Body(const QRect& rect, QObject* parent):
+            QObject(parent),
+            QGraphicsRectItem(rect)
         {
             setPen(QPen(Qt::red));
+            setZValue(1000000000000000);
         }
         enum {Type = UserType-4321};
 

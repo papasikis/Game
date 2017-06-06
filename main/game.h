@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <QObject>
+#include <QDebug>
 #include "../game_objects/gamecreature.h"
 #include "../game_objects/hero.h"
 #include "map.h"
