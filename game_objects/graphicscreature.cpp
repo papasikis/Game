@@ -208,7 +208,7 @@ GraphicsCreature::GraphicsCreature(const QString& fileName, Map *map, const QPoi
 void GraphicsCreature::setInfo(const QString &fileName)
 {
     QDomDocument domDoc;
-    QFile file(":/new/prefix1/resources/isometric_hero/"+fileName);
+    QFile file(":/new/prefix1/resources/"+fileName+"/"+fileName+".xml");
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Couldn't open " << fileName;
     }
@@ -228,7 +228,7 @@ void GraphicsCreature::setInfo(const QString &fileName)
     for (auto itemGroup: itemGroups) {
         auto images = toQList(itemGroup.toElement().elementsByTagName("image"));
         for (auto image: images) {
-            auto pixmap = new QPixmap(":/new/prefix1/resources/isometric_hero/" +
+            auto pixmap = new QPixmap(":/new/prefix1/resources/"+fileName+"/"+
                                       image.toElement().attribute("source"));
             if (pixmap != nullptr)
                 source_[image.toElement().attribute("name")] = pixmap;
