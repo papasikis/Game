@@ -19,6 +19,9 @@ void GameCreature::move(const QList<QPoint> &nodes)
 
 void GameCreature::attack(GameCreature *enemy, const QList<QPoint> &nodes)
 {
+    if (enemy == this)
+        return;
+
     auto connection = new QMetaObject::Connection();
     *connection = connect(graphicsCreature(), &GraphicsCreature::moveStopped,
                                                  [this, connection, enemy](){
