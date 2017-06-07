@@ -12,8 +12,9 @@ class GameCreature: public QObject
 
     GraphicsCreature* graphicsCreature_ = nullptr;
     int orientation_ = 1;
-    int damage_ = 1;
-    int health_ = 5;
+    int damage_ = 5;
+    int health_ = 20;
+    int armor_ = 1;
     float attackSpeed_ = 1.5;
     bool inFight_ = false;
     GameCreature* enemy_ = nullptr;
@@ -34,7 +35,10 @@ public:
     void fightWith(GameCreature* enemy);
     void stopFight();
 
+    void setHealth(int delta);
+    void die();
+
 signals:
-    void die() const;
+    void dead() const;
 };
 #endif // GAMECREATURE_H

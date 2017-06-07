@@ -67,7 +67,6 @@ private:
     Q_PROPERTY(QPoint sourcePos READ sourcePos WRITE setSourcePos)
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
     
-    Barrier* barrier_ = nullptr;
     QPointF center_ = QPointF(64, 96);
     QPoint sourcePos_ = QPoint(0, 0);
     QSize tileSize_ = QSize(0, 0);
@@ -80,9 +79,8 @@ private:
     QVector<QPixmap*> actualThings_;
     QMap<QString,QPropertyAnimation*> animations_;
 
+    Barrier* barrier_ = nullptr;
     Body* body_ = nullptr;
-
-    QSequentialAnimationGroup* runAnimation = nullptr;
 
 public:
     explicit GraphicsCreature(const QString& fileName, Map* map, const QPoint& node,

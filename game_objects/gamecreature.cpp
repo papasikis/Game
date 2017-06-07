@@ -57,7 +57,7 @@ void GameCreature::fightWith(GameCreature *enemy)
 {
     inFight_ = true;
     enemy_ = enemy;
-    connect(enemy_, &GameCreature::die, [this](){
+    connect(enemy_, &GameCreature::dead, [this](){
         stopFight();
     });
 }
@@ -71,20 +71,30 @@ void GameCreature::stopFight()
 void GameCreature::getDamage(int damage)
 {
     graphicsCreature_->getDamage();
-    health_ -= damage;
-    if (health_ == 0) {
-        emit die();
-        graphicsCreature()->die();
-        connect(graphicsCreature(), &GraphicsCreature::dieStopped, [this](){
-            auto timer = new QTimer();
-            connect(timer, &QTimer::timeout, [this, timer](){
-                delete this;
-                delete timer;
+    setHealth(-damage + armor_);
+}
 
-            });
-            timer->start(3000);
-        });
+void GameCreature::setHealth(int delta)
+{
+    health_ += delta;
+    if (health_ <= 0) {
+        die();
     }
+}
+
+void GameCreature::die() {
+    emit dead();
+    graphicsCreature()->die();
+
+    connect(graphicsCreature(), &GraphicsCreature::dieStopped, [this](){
+        auto timer = new QTimer();
+        connect(timer, &QTimer::timeout, [this, timer](){
+            delete this;
+            delete timer;
+
+        });
+        timer->start(3000);
+    });
 }
 
 QPoint GameCreature::currentNode() const

@@ -95,7 +95,6 @@ void GraphicsCreature::hit()
     auto animation = new QPropertyAnimation(this, "sourcePos");
     animation->setStartValue(QPoint(12, sourcePos().y()));
     animation->setEndValue(QPoint(15, sourcePos().y()));
-    animation->setDuration(1000);
     connect(animation, &QPropertyAnimation::finished,
             [this](){
        changeState(Stay);
@@ -132,6 +131,8 @@ void GraphicsCreature::die()
     });
     changeState(Dead);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
+    delete body_;
+    delete barrier_;
 }
 
 
