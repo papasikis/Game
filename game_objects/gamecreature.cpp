@@ -38,6 +38,7 @@ void GameCreature::hit() {
     auto connection = new QMetaObject::Connection();
     *connection = connect(graphicsCreature(), &GraphicsCreature::hitStopped,
                                                  [this, connection](){
+        enemy_->getDamage(damage_);
         auto timer = new QTimer();
         connect(timer, &QTimer::timeout,
                 [this, timer](){
@@ -50,7 +51,6 @@ void GameCreature::hit() {
     });
 
     graphicsCreature_->hit();
-    enemy_->getDamage(damage_);
 }
 
 void GameCreature::fightWith(GameCreature *enemy)

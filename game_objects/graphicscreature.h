@@ -82,6 +82,8 @@ private:
 
     Body* body_ = nullptr;
 
+    QSequentialAnimationGroup* runAnimation = nullptr;
+
 public:
     explicit GraphicsCreature(const QString& fileName, Map* map, const QPoint& node,
                               QObject* parent = nullptr);
@@ -107,6 +109,7 @@ signals:
     void hitStopped() const;
     void getDamageStopped() const;
     void dieStopped() const;
+    void posChanged() const;
 
     // QGraphicsItem interface
 public:

@@ -8,6 +8,7 @@ Menu::Menu(QWidget *parent) :
     ui->setupUi(this);
     this->setGeometry(window()->width()/2, window()->height()/2,
                       geometry().width(), geometry().height());
+//    on_pushButton_clicked();
 }
 
 Menu::~Menu()

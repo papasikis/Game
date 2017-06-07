@@ -76,17 +76,53 @@ void GraphicsCreature::move(QList<QPoint> nodes)
         seq->addAnimation(animation);
     }
 
-    changeState(Run);
-    connect(seq, &QSequentialAnimationGroup::finished,
-            [this](){
-        changeState(Stay);
-        emit moveStopped();
-    });
-    if (seq->animationCount() == 0) {
-        seq->finished();
+    if (runAnimation != nullptr) {
+        auto connection = new QMetaObject::Connection();
+        *connection = connect(runAnimation, &QSequentialAnimationGroup::currentAnimationChanged,
+                              [this, connection, seq](){
+            disconnect(*connection);
+            delete connection;
+
+            runAnimation->stop();
+
+            auto stopConnection = new QMetaObject::Connection();
+            *stopConnection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
+                                      [this, stopConnection, seq](){
+                runAnimation = seq;
+
+                auto subConnection = new QMetaObject::Connection();
+                *subConnection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
+                                         [this, subConnection](){
+                    runAnimation = nullptr;
+                    emit moveStopped();
+                    changeState(Stay);
+                    disconnect(*subConnection);
+                    delete subConnection;
+                });
+
+                changeState(Run);
+                runAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+                disconnect(*stopConnection);
+                delete stopConnection;
+            });
+        });
     }
-    else
-        seq->start(QAbstractAnimation::DeleteWhenStopped);
+    else {
+        runAnimation = seq;
+
+        auto connection = new QMetaObject::Connection();
+        *connection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
+                              [this, connection](){
+            runAnimation = nullptr;
+            emit moveStopped();
+            changeState(Stay);
+            disconnect(*connection);
+            delete connection;
+        });
+
+        changeState(Run);
+        runAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+    }
 
 }
 
@@ -95,11 +131,13 @@ void GraphicsCreature::hit()
     auto animation = new QPropertyAnimation(this, "sourcePos");
     animation->setStartValue(QPoint(12, sourcePos().y()));
     animation->setEndValue(QPoint(15, sourcePos().y()));
+    animation->setDuration(1000);
     connect(animation, &QPropertyAnimation::finished,
             [this](){
        changeState(Stay);
        emit hitStopped();
     });
+
     changeState(Hit);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
@@ -158,7 +196,7 @@ void GraphicsCreature::changeState(GraphicsCreature::State state)
 
 
 void GraphicsCreature::setPos(const QPointF &point)
-{
+{   
     auto _pos = point-center_;
     QGraphicsItem::setPos(_pos);
     currentNode_ = map_->fromScreenToNode(point.toPoint());
@@ -166,6 +204,8 @@ void GraphicsCreature::setPos(const QPointF &point)
 
     auto bodyPos = mapToScene(55, 55).toPoint();
     body_->setPos(bodyPos);
+
+    emit posChanged();
 }
 
 QPointF GraphicsCreature::pos() const

@@ -3,8 +3,21 @@
 Game::Game(Map *map): QObject()
 {
     setMap(map);
+
     hero = new Hero("hero_man.xml", map_, QPoint(6, 7));
+
+    connect(hero->graphicsCreature(), &GraphicsCreature::posChanged, [this](){
+        auto sRect = map_->scene()->sceneRect();
+        auto gCreature = hero->graphicsCreature();
+        map_->scene()->setSceneRect(gCreature->pos().x()-sRect.width()/2,
+                                    gCreature->pos().y()-sRect.height()/2,
+                                    sRect.width(), sRect.height());
+        map_->scene()->update();
+    });
+
     auto mob = new Hero("hero_man.xml", map_, QPoint(4, 7));
+
+
 }
 
 void Game::setMap(Map* map) {
