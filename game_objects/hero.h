@@ -14,7 +14,7 @@
 
 class Hero: public GameCreature
 {
-
+//test
 public:
     Hero(const QString& infoFile, Map* map, const QPoint& node);
 
