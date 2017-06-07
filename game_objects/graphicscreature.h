@@ -92,7 +92,7 @@ public:
 
     void move(QList<QPoint> nodes);
     void hit();
-    void getDamage();
+    void getDamage(const QString &text);
     void die();
 
     QPoint currentNode() const {return currentNode_;}

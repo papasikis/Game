@@ -70,8 +70,17 @@ void GameCreature::stopFight()
 
 void GameCreature::getDamage(int damage)
 {
-    graphicsCreature_->getDamage();
-    setHealth(-damage + armor_);
+    damage = damage - armor_;
+    auto _ = damage;
+    QString text;
+    while (_ != 0) {
+        auto __ = _%10;
+        text.push_front('0'+__);
+        _/=10;
+    }
+    text.push_front('-');
+    graphicsCreature_->getDamage(text);
+    setHealth(-damage);
 }
 
 void GameCreature::setHealth(int delta)

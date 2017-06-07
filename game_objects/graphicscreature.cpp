@@ -105,7 +105,7 @@ void GraphicsCreature::hit()
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void GraphicsCreature::getDamage()
+void GraphicsCreature::getDamage(const QString& text)
 {
     auto animation = new QPropertyAnimation(this, "sourcePos");
     animation->setStartValue(QPoint(16, sourcePos().y()));
@@ -117,6 +117,18 @@ void GraphicsCreature::getDamage()
     });
     changeState(Damaged);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    auto textItem = new QGraphicsTextItem(text, this);
+    textItem->setDefaultTextColor(Qt::red);
+    textItem->setPos(50, 30);
+
+    auto textAnimation = new QPropertyAnimation(textItem, "pos");
+    textAnimation->setEndValue(QPoint(50, 0));
+    textAnimation->setDuration(1500);
+    connect(textAnimation, &QPropertyAnimation::finished, [textItem](){
+       delete textItem;
+    });
+    textAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void GraphicsCreature::die()
