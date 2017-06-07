@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creature type="skeleton_occultist" tilewidth="128" tileheight="128" rows="32" lines="8"
+    centerX="64" centerY="96">
+
+    <itemgroup name="clothes">
+        <image source="skeleton_occultist.png" name="clothes"/>
+    <itemgroup/>
+</creature>

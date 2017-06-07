@@ -9,10 +9,28 @@
         <file>resources/items_tiles_2_68x54.png</file>
         <file>resources/knight_test.png</file>
         <file>resources/house_tile_1_158x146.png</file>
-        <file>resources/isometric_hero/clothes.png</file>
-        <file>resources/isometric_hero/greatsword.png</file>
-        <file>resources/isometric_hero/male_head1.png</file>
-        <file>resources/isometric_hero/shield.png</file>
-        <file>resources/isometric_hero/hero_man.xml</file>
+        <file>resources/hero_man/wand.png</file>
+        <file>resources/hero_man/steel_armor.png</file>
+        <file>resources/hero_man/staff.png</file>
+        <file>resources/hero_man/slingshot.png</file>
+        <file>resources/hero_man/shortsword.png</file>
+        <file>resources/hero_man/shortbow.png</file>
+        <file>resources/hero_man/shield.png</file>
+        <file>resources/hero_man/rod.png</file>
+        <file>resources/hero_man/male_head3.png</file>
+        <file>resources/hero_man/male_head2.png</file>
+        <file>resources/hero_man/male_head1.png</file>
+        <file>resources/hero_man/longsword.png</file>
+        <file>resources/hero_man/longbow.png</file>
+        <file>resources/hero_man/leather_armor.png</file>
+        <file>resources/hero_man/hero_man.xml</file>
+        <file>resources/hero_man/greatsword.png</file>
+        <file>resources/hero_man/greatstaff.png</file>
+        <file>resources/hero_man/greatbow.png</file>
+        <file>resources/hero_man/dagger.png</file>
+        <file>resources/hero_man/clothes.png</file>
+        <file>resources/hero_man/buckler.png</file>
+        <file>resources/skeleton_occultist/skeleton_occultist.xml</file>
+        <file>resources/skeleton_occultist/skeleton_occultist.png</file>
     </qresource>
 </RCC>

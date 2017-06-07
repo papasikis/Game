@@ -4,7 +4,7 @@ Game::Game(Map *map): QObject()
 {
     setMap(map);
 
-    hero = new Hero("hero_man.xml", map_, QPoint(6, 7));
+    hero = new Hero("skeleton_occultist", map_, QPoint(6, 7));
 
     connect(hero->graphicsCreature(), &GraphicsCreature::posChanged, [this](){
         auto sRect = map_->scene()->sceneRect();
@@ -15,7 +15,7 @@ Game::Game(Map *map): QObject()
         map_->scene()->update();
     });
 
-    auto mob = new Hero("hero_man.xml", map_, QPoint(4, 7));
+    auto mob = new Hero("hero_man", map_, QPoint(4, 7));
 
 
 }
