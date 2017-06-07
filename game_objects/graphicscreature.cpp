@@ -76,53 +76,17 @@ void GraphicsCreature::move(QList<QPoint> nodes)
         seq->addAnimation(animation);
     }
 
-    if (runAnimation != nullptr) {
-        auto connection = new QMetaObject::Connection();
-        *connection = connect(runAnimation, &QSequentialAnimationGroup::currentAnimationChanged,
-                              [this, connection, seq](){
-            disconnect(*connection);
-            delete connection;
-
-            runAnimation->stop();
-
-            auto stopConnection = new QMetaObject::Connection();
-            *stopConnection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
-                                      [this, stopConnection, seq](){
-                runAnimation = seq;
-
-                auto subConnection = new QMetaObject::Connection();
-                *subConnection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
-                                         [this, subConnection](){
-                    runAnimation = nullptr;
-                    emit moveStopped();
-                    changeState(Stay);
-                    disconnect(*subConnection);
-                    delete subConnection;
-                });
-
-                changeState(Run);
-                runAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-                disconnect(*stopConnection);
-                delete stopConnection;
-            });
-        });
+    changeState(Run);
+    connect(seq, &QSequentialAnimationGroup::finished,
+            [this](){
+        changeState(Stay);
+        emit moveStopped();
+    });
+    if (seq->animationCount() == 0) {
+        seq->finished();
     }
-    else {
-        runAnimation = seq;
-
-        auto connection = new QMetaObject::Connection();
-        *connection = connect(runAnimation, &QSequentialAnimationGroup::destroyed,
-                              [this, connection](){
-            runAnimation = nullptr;
-            emit moveStopped();
-            changeState(Stay);
-            disconnect(*connection);
-            delete connection;
-        });
-
-        changeState(Run);
-        runAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-    }
+    else
+        seq->start(QAbstractAnimation::DeleteWhenStopped);
 
 }
 
