@@ -5,7 +5,9 @@ Game::Game(Map *map): QObject()
     setMap(map);
 
     hero = new Hero(map_, QPoint(6, 7));
-    auto spawn = new Spawn(QPoint(20,20), map);
+    auto mob = new Mob(Mob::SkeletonOccultist, map_, QPoint(10, 8));
+
+//    auto spawn = new Spawn(QPoint(20,20), map);
     connect(hero->graphicsCreature(), &GraphicsCreature::posChanged, [this](){
         auto sRect = map_->scene()->sceneRect();
         auto gCreature = hero->graphicsCreature();

@@ -17,7 +17,7 @@ void GameCreature::move(const QList<QPoint> &nodes)
     graphicsCreature_->move(nodes);
 }
 
-void GameCreature::attack(GameCreature *enemy, const QList<QPoint> &nodes)
+void GameCreature::attack(GameCreature *enemy)
 {
     if (enemy == this)
         return;
@@ -31,17 +31,26 @@ void GameCreature::attack(GameCreature *enemy, const QList<QPoint> &nodes)
         delete connection;
     });
 
-    move(nodes);
+    move(graphicsCreature()->map()->getWayFromTo(currentNode(), enemy->currentNode()));
 }
 
 void GameCreature::hit() {
     if (!inFight_)
         return;
 
+    auto dir = enemy_->currentNode() - currentNode();
+    if (std::abs(dir.x())>1 || std::abs(dir.y())>1) {
+        attack(enemy_);
+        return;
+    }
+    else {
+        graphicsCreature()->turnTo(dir);
+    }
+
     auto connection = new QMetaObject::Connection();
     *connection = connect(graphicsCreature(), &GraphicsCreature::hitStopped,
                                                  [this, connection](){
-        enemy_->getDamage(damage_);
+        enemy_->getDamage(damage_, this);
         auto timer = new QTimer();
         connect(timer, &QTimer::timeout,
                 [this, timer](){
@@ -71,8 +80,9 @@ void GameCreature::stopFight()
     enemy_ = nullptr;
 }
 
-void GameCreature::getDamage(int damage)
+void GameCreature::getDamage(int damage, GameCreature* enemy)
 {
+    emit attacked(enemy);
     damage = damage - armor_;
     auto _ = damage;
     QString text;

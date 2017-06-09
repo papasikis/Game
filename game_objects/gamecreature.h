@@ -16,18 +16,19 @@ class GameCreature: public QObject
     int health_ = 20;
     int armor_ = 1;
     float attackSpeed_ = 1.5;
-    bool inFight_ = false;
     GameCreature* enemy_ = nullptr;
     enum State {Move, None};
     State state_ = None;
 
+protected:
+    bool inFight_ = false;
 public:
     GameCreature(QString str, Map* map, const QPoint& node);
     ~GameCreature();
     GraphicsCreature* graphicsCreature() {return graphicsCreature_;}
     void move(const QList<QPoint>& nodes);
-    void attack(GameCreature* enemy, const QList<QPoint> &nodes);
-    void getDamage(int damage);
+    void attack(GameCreature* enemy);
+    void getDamage(int damage, GameCreature* enemy);
     QPoint currentNode() const;
     State state() const {return state_;}
     void changeState(State state) {state_ = state;}
@@ -40,5 +41,6 @@ public:
 
 signals:
     void dead() const;
+    void attacked(GameCreature* enemy);
 };
 #endif // GAMECREATURE_H

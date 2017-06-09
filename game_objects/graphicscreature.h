@@ -90,6 +90,7 @@ public:
     QPoint sourcePos() const;
     void setSourcePos(const QPoint &sourcePos);
 
+    void turnTo(const QPoint& dir);
     void move(QList<QPoint> nodes);
     void hit();
     void getDamage(const QString &text);
@@ -101,6 +102,7 @@ public:
     void changeState(State state);
 
     Body* body() {return body_;}
+    Map* map() {return map_;}
 
 signals:
     void moveStopped() const;

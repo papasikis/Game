@@ -20,6 +20,30 @@ void GraphicsCreature::setSourcePos(const QPoint &sourcePos)
         scene()->update(mapRectToScene(boundingRect()));
 }
 
+void GraphicsCreature::turnTo(const QPoint &dir)
+{
+    int direction = 0;
+    if (dir == QPoint(0, 1))      {
+        direction = 7;
+    } else if (dir == QPoint(1, 1)) {
+        direction = 6;
+    } else if (dir == QPoint(1, 0)) {
+        direction = 5;
+    } else if (dir == QPoint(1, -1)) {
+        direction = 4;
+    } else if (dir == QPoint(0, -1)) {
+        direction = 3;
+    } else if (dir == QPoint(-1, -1)) {
+        direction = 2;
+    } else if (dir == QPoint(-1, 0)){
+        direction = 1;
+    } else if (dir == QPoint(-1, 1)) {
+        direction = 0;
+    }
+
+    setSourcePos(QPoint(sourcePos().x(), direction));
+}
+
 void GraphicsCreature::move(QList<QPoint> nodes)
 {
     if (nodes.empty() || nodes[0] != currentNode_)
@@ -107,17 +131,6 @@ void GraphicsCreature::hit()
 
 void GraphicsCreature::getDamage(const QString& text)
 {
-    auto animation = new QPropertyAnimation(this, "sourcePos");
-    animation->setStartValue(QPoint(16, sourcePos().y()));
-    animation->setEndValue(QPoint(17, sourcePos().y()));
-    connect(animation, &QPropertyAnimation::finished,
-            [this](){
-       changeState(Stay);
-       emit getDamageStopped();
-    });
-    changeState(Damaged);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
-
     auto textItem = new QGraphicsTextItem(text, this);
     textItem->setDefaultTextColor(Qt::red);
     textItem->setPos(50, 30);
@@ -129,6 +142,20 @@ void GraphicsCreature::getDamage(const QString& text)
        delete textItem;
     });
     textAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    if (state() == Run || state() == Hit)
+        return;
+
+    auto animation = new QPropertyAnimation(this, "sourcePos");
+    animation->setStartValue(QPoint(16, sourcePos().y()));
+    animation->setEndValue(QPoint(17, sourcePos().y()));
+    connect(animation, &QPropertyAnimation::finished,
+            [this](){
+       changeState(Stay);
+       emit getDamageStopped();
+    });
+    changeState(Damaged);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void GraphicsCreature::die()

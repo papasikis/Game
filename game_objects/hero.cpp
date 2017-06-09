@@ -1,7 +1,7 @@
 #include "hero.h"
 
-Hero::Hero(const QString& infoFile, Map *map, const QPoint &node):
-    GameCreature(infoFile, map, node)
+Hero::Hero(Map *map, const QPoint &node):
+    GameCreature("hero_man", map, node)
 {
     graphicsCreature()->setFlag(QGraphicsItem::ItemIsMovable);
     graphicsCreature()->setFlag(QGraphicsItem::ItemIsFocusable);

@@ -10,13 +10,13 @@
 #include <QTimeLine>
 #include <QKeyEvent>
 #include "graphicscreature.h"
-#include "../main/game.h"
+#include "gamecreature.h"
 
 class Hero: public GameCreature
 {
 
 public:
-    Hero(const QString& infoFile, Map* map, const QPoint& node);
+    Hero(Map* map, const QPoint& node);
 
 };
 

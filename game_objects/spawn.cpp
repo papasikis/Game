@@ -10,11 +10,11 @@ Spawn::Spawn(const QPoint &centerNode, Map *map, QObject *parent) : QObject(pare
 
 void Spawn::addMob(Mob::Type type)
 {
-    qsrand(QTime::currentTime().msec());
-    auto node = QPoint(qrand()%10 - 5, qrand()%10 - 5) + centerNode_;
-    auto mob = new Mob(type, map_, node);
-    mobs += mob;
-    connect(mob, &Mob::moveStopped, [mob, this](){
+//    qsrand(QTime::currentTime().msec());
+//    auto node = QPoint(qrand()%10 - 5, qrand()%10 - 5) + centerNode_;
+//    auto mob = new Mob(type, map_, node);
+//    mobs += mob;
+//    connect(mob, &Mob::moveStopped, [mob, this](){
 //        if (!mob->inFight()){
 //            auto randomPoint = QPoint(qrand()%10 - 5, qrand()%10 - 5) + centerNode_;
 //            auto timer = new QTimer();
@@ -24,7 +24,7 @@ void Spawn::addMob(Mob::Type type)
 //            });
 //            timer->start(2000);
 //        }
-    });
-    auto randomPoint = QPoint(qrand()%10 - 5, qrand()%10 - 5) + centerNode_;
-    mob->move(map_->getWayFromTo(mob->currentNode(), randomPoint));
+//    });
+//    auto randomPoint = QPoint(qrand()%10 - 5, qrand()%10 - 5) + centerNode_;
+//    mob->move(map_->getWayFromTo(mob->currentNode(), randomPoint));
 }
