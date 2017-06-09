@@ -3,21 +3,21 @@
 
 #include <QObject>
 #include <QDebug>
-#include "../game_objects/gamecreature.h"
 #include "../game_objects/hero.h"
+#include "../game_objects/mob.h"
+#include "../game_objects/spawn.h"
 #include "map.h"
 #include "scene.h"
 
 class Game : public QObject
 {
     Q_OBJECT
-    GameCreature* hero;
+    Hero* hero;
     Map* map_;
 
 public:
     explicit Game(Map* map);
     void setMap(Map* map);
-    void addOnScene(GameCreature* creature);
 
 signals:
 

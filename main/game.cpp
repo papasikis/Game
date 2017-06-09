@@ -4,8 +4,8 @@ Game::Game(Map *map): QObject()
 {
     setMap(map);
 
-    hero = new Hero("skeleton_occultist", map_, QPoint(6, 7));
-
+    hero = new Hero(map_, QPoint(6, 7));
+    auto spawn = new Spawn(QPoint(20,20), map);
     connect(hero->graphicsCreature(), &GraphicsCreature::posChanged, [this](){
         auto sRect = map_->scene()->sceneRect();
         auto gCreature = hero->graphicsCreature();
@@ -14,10 +14,6 @@ Game::Game(Map *map): QObject()
                                     sRect.width(), sRect.height());
         map_->scene()->update();
     });
-
-    auto mob = new Hero("hero_man", map_, QPoint(4, 7));
-
-
 }
 
 void Game::setMap(Map* map) {
@@ -33,11 +29,10 @@ void Game::setMap(Map* map) {
                 auto parent = body->parent();
                 auto enemy = reinterpret_cast<GameCreature*>(parent->parent());
 
-                hero->attack(enemy, map_->getWayFromTo(hero->currentNode(), enemy->currentNode()));
+                hero->attack(enemy);
                 break;
             }
             default:
-//                qDebug() << item->zValue();
                 hero->move(map_->getWayFromTo(hero->graphicsCreature()->currentNode(),
                                                                   map_->fromScreenToNode(point)));
                 break;
@@ -45,9 +40,4 @@ void Game::setMap(Map* map) {
 
         }
     });
-}
-
-void Game::addOnScene(GameCreature *creature)
-{
-    map_->scene()->addItem(creature->graphicsCreature());
 }

@@ -47,7 +47,8 @@ HEADERS += \
     game_objects/mob.h \
     game_objects/usable.h \
     game_objects/weapon.h \
-    menu.h
+    menu.h \
+    game_objects/spawn.h
 
 SOURCES += \
     main.cpp \
@@ -66,4 +67,5 @@ SOURCES += \
     game_objects/mob.cpp \
     game_objects/usable.cpp \
     game_objects/weapon.cpp \
-    menu.cpp
+    menu.cpp \
+    game_objects/spawn.cpp

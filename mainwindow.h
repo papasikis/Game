@@ -7,7 +7,7 @@
 #include "main/map.h"
 #include "main/scene.h"
 #include "main/view.h"
-#include "game_objects/hero.h"
+#include "main/game.h"
 
 namespace Ui {
 class MainWindow;
